@@ -8,12 +8,20 @@
 </head>
 <body>
     <div class="chat-container">
-        <h1>HR Chatbot</h1>
+        <div class="image-container">
+            <div class="heading">
+                <h1>Human Resource Assistance</h1>
+                <i>Onboarding Made Effortless</i>
+            </div>
+            <img src="https://seekvectors.com/files/download/lloyds-bank-logo-05.png" alt="Image" class="chatbot-image">
+        </div>
         <div id="chatbox">
             <div id="messages"></div>
         </div>
-        <input id="userInput" type="text" placeholder="Type a message..." autofocus>
-        <button onclick="sendMessage()">Send</button>
+        <div class="input-container">
+            <input id="userInput" type="text" placeholder="Type a message..." autofocus onkeydown="checkEnterKey(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
     </div>
     <script>
         function sendMessage() {
@@ -38,10 +46,37 @@
         function appendMessage(sender, message) {
             const messageElement = document.createElement('div');
             messageElement.className = 'message';
-            messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            if (sender === 'You') {
+                messageElement.classList.add('user-message');
+            } else {
+                messageElement.classList.add('bot-message');
+            }
+            messageElement.innerHTML = `<strong>${sender}: </strong>${message}`;
             document.getElementById('messages').appendChild(messageElement);
             document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
         }
+
+        function animateMessage(element) {
+            element.style.opacity = '0';
+            setTimeout(() => {
+                element.style.opacity = '1';
+            }, 100);
+        }
+
+        function checkEnterKey(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendInitialMessage(){
+            const initialMessage = " Hello! I am your digital HR assistant. Ask me anything about HR policies and procedures..";
+            appendMessage('Bot',initialMessage);
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            sendInitialMessage();
+        });
     </script>
 </body>
 </html>
