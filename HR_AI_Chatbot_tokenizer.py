@@ -1,35 +1,22 @@
+import pandas as pd
 from tensorflow.keras.preprocessing.text import Tokenizer
 import json
 
-# Example texts used for training the tokenizer
-texts = [
-    "What are the types of reimbursements I can claim?",
-    "What is the process of claiming reimbursements?",
-    "Where to declare investments?",
-    "How to select Tax Regime for current Financial Year?",
-    "How to claim medical insurance?",
-    "What are the various types of leave options available for employees?",
-    "How do I apply for leave?",
-    "How can I view my annual leave balance?",
-    "What is the policy for sick leave?",
-    "What is the policy for emergency leaves?",
-    "How many weeks of maternity/paternity leave am I entitled to?",
-    "What are the working hours for the company?",
-    "What is the company's work from home policy?",
-    "How do I fill out the Clarity time sheet?",
-    "What is the policy on flexible working hours?",
-    "Where can I find the leave/attendance/WFH policy document?",
-    "Who do I reach out to for further clarifications?",
-    "Do the company provide transport facility?",
-    "Do the company provide meals?",
-    "Are there any committees for employee engagement?"
-]
+# Load the CSV file into a DataFrame
+csv_file_path = 'C:/Users/ChatbotQuestionnaire.csv'  # Update with the path to your CSV file
+df = pd.read_csv(csv_file_path)
+
+# Assuming the questions are in a column named 'question'
+# Update the column name if it's different in your CSV
+questions = df['Question'].tolist()
 
 # Create and fit the tokenizer
-tokenizer = Tokenizer(num_words=10000)  # Adjust num_words
-tokenizer.fit_on_texts(texts)
+tokenizer = Tokenizer(num_words=10000)  # Adjust num_words based on your needs
+tokenizer.fit_on_texts(questions)
 
-# Save the tokenizer
+# Save the tokenizer to a JSON file
 tokenizer_json = tokenizer.to_json()
-with open('HR_AI_Chatbot_tokenizer.json', 'w') as f:
+with open('HR_AI_Chatbot_tokenizer.json', 'w', encoding='utf-8') as f:
     f.write(tokenizer_json)
+
+print("Tokenizer has been created and saved successfully.")
