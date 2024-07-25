@@ -6,10 +6,10 @@ import json
 app = Flask(__name__)
 
 # Load pre-trained TensorFlow model
-model = tf.keras.models.load_model('C:/Users/Sanghamitr Lahiri/HR_Chatbot_trained_model.h5')
+model = tf.keras.models.load_model('../HR_Chatbot_trained_model.h5')
 
 # Load the tokenizer
-with open('C:/Users/Sanghamitr Lahiri/HR_AI_Chatbot_tokenizer.json', 'r', encoding='utf-8') as f:
+with open('../HR_AI_Chatbot_tokenizer.json', 'r', encoding='utf-8') as f:
     tokenizer_config = json.load(f)
 tokenizer = tf.keras.preprocessing.text.tokenizer_from_json(json.dumps(tokenizer_config))
 
