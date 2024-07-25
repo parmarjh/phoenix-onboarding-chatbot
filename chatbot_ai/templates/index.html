@@ -51,7 +51,7 @@
             } else {
                 messageElement.classList.add('bot-message');
             }
-            messageElement.innerHTML = `<strong>${sender}: </strong>${message}`;
+            messageElement.innerHTML = `</strong>${message}`;
             document.getElementById('messages').appendChild(messageElement);
             document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
         }
