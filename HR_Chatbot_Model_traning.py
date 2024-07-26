@@ -7,7 +7,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Load dataset
-data = pd.read_csv(r'C:/Users/ChatbotQuestionnaire.csv')
+data = pd.read_csv('C:/Users/ChatbotQuestionnaire.csv', encoding='utf-8')
 
 # Preprocess text
 def preprocess_text(text):
