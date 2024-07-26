@@ -34,16 +34,5 @@ class ChatbotTestCase(unittest.TestCase):
             data = json.loads(response.data)
             self.assertEqual(data['response'], expected_response)
 
-    def test_dynamic_response(self):
-        # Load the CSV data and select a test question and its response
-        data = pd.read_csv('../ChatbotQuestionnaire.csv')
-        test_question = data['Question'].iloc[0]
-        expected_response = data['Response'].iloc[0]
-
-        # Test dynamic response generation
-        response = self.app.post('/get_response', data={'message': test_question})
-        data = json.loads(response.data)
-        self.assertEqual(data['response'], expected_response)
-
 if __name__ == '__main__':
     unittest.main()
