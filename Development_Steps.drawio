@@ -1,23 +1,41 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" version="24.7.4">
   <diagram name="Page-1" id="x77bRWYG9cM-XC8I-5WV">
-    <mxGraphModel dx="3278" dy="1182" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="3200" dy="1114" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="AiQ-zCmYKtczXyiegsB7-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#3333FF;strokeColor=#3333FF;strokeWidth=3;" edge="1" parent="1" source="dt18gZ5KOxs7YPFGG8bh-1" target="dt18gZ5KOxs7YPFGG8bh-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="dt18gZ5KOxs7YPFGG8bh-1" value="GCP Environment Setup" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-10" y="160" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="AiQ-zCmYKtczXyiegsB7-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;fillColor=#0050ef;strokeColor=#001DBC;" edge="1" parent="1" source="dt18gZ5KOxs7YPFGG8bh-2" target="dt18gZ5KOxs7YPFGG8bh-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="dt18gZ5KOxs7YPFGG8bh-2" value="Model Training or Data Preprocessing&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="190" y="160" width="120" height="68" as="geometry" />
+          <mxGeometry x="190" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AiQ-zCmYKtczXyiegsB7-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#0050ef;strokeColor=#001DBC;strokeWidth=3;" edge="1" parent="1" source="dt18gZ5KOxs7YPFGG8bh-3" target="dt18gZ5KOxs7YPFGG8bh-4">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="dt18gZ5KOxs7YPFGG8bh-3" value="Upload Model to Google Cloud Storage" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="390" y="160" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="AiQ-zCmYKtczXyiegsB7-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#0050ef;strokeColor=#001DBC;strokeWidth=3;" edge="1" parent="1" source="dt18gZ5KOxs7YPFGG8bh-4" target="dt18gZ5KOxs7YPFGG8bh-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="dt18gZ5KOxs7YPFGG8bh-4" value="Deploy on Vertex AI" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="590" y="160" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="AiQ-zCmYKtczXyiegsB7-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#0050ef;strokeColor=#001DBC;strokeWidth=3;" edge="1" parent="1" source="dt18gZ5KOxs7YPFGG8bh-5" target="dt18gZ5KOxs7YPFGG8bh-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="dt18gZ5KOxs7YPFGG8bh-5" value="Develop Flask App" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="790" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AiQ-zCmYKtczXyiegsB7-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#0050ef;strokeColor=#001DBC;strokeWidth=3;" edge="1" parent="1" source="dt18gZ5KOxs7YPFGG8bh-6" target="ocRvTXGRfLxrXZjeZLk8-1">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="dt18gZ5KOxs7YPFGG8bh-6" value="Integrate with Vertex AI" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="990" y="160" width="120" height="60" as="geometry" />
