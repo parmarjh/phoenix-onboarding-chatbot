@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify, render_template
 import tensorflow as tf
 import numpy as np
 import json
+import re
+import pandas as pd
+from difflib import get_close_matches
 
 app = Flask(__name__)
 
@@ -13,13 +16,57 @@ with open('../HR_AI_Chatbot_tokenizer.json', 'r', encoding='utf-8') as f:
     tokenizer_config = json.load(f)
 tokenizer = tf.keras.preprocessing.text.tokenizer_from_json(json.dumps(tokenizer_config))
 
-max_len = 20  # Assuming this is the maximum length of the input sequences
+# Load the CSV data
+data = pd.read_csv('../ChatbotQuestionnaire.csv')
 
+# Preprocess text
+def preprocess_text(text):
+    return text.lower()
+
+# Preprocess the data
+data['Question'] = data['Question'].apply(preprocess_text)
+categories = data['Category'].astype('category').cat.categories.tolist()
+
+# Max length for padding
+max_len = 100
+
+# Static answers dictionary
+static_answers = {
+    "time off": "To request time off, please submit a leave request form through the employee portal.",
+"leave policy": "Our company offers various types of leave including annual leave, sick leave, and parental leave.",
+"leave": "Our company offers various types of leave including annual leave, sick leave, and parental leave.",
+"employment verification": "To request an employment verification letter, please contact HR with your request.",
+"verification": "To request an employment verification letter, please contact HR with your request.",
+"employment": "To request an employment verification letter, please contact HR with your request.",
+"it support": "For IT support, please contact the IT helpdesk via email at support@company.com.",
+"support": "For IT support, please contact the IT helpdesk via email at support@company.com.",
+"it": "For IT support, please contact the IT helpdesk via email at support@company.com.",
+"personal information": "To update your personal information, please visit the employee portal and navigate to "
+                        "the personal details section",
+"performance review": "Performance reviews are conducted annually. Please check with HR for specific dates and "
+                      "procedures.",
+"performance": "Performance reviews are conducted annually. Please check with HR for specific dates and procedures.",
+"review": "Performance reviews are conducted annually. Please check with HR for specific dates and procedures.",
+"pay stubs": "You can access your pay stubs through the payroll section of the employee portal.",
+"payroll": "You can access your pay stubs through the payroll section of the employee portal.",
+"salary slip": "You can access your pay stubs through the payroll section of the employee portal.",
+"pay slip": "You can access your pay stubs through the payroll section of the employee portal.",
+"salary certificate": "You can access your pay stubs through the payroll section of the employee portal.",
+"salary": "You can access your pay stubs through the payroll section of the employee portal.",
+"remote work": "Our company allows remote work.Talk to your Line Manager for more information.",
+"remote": "Our company allows remote work.Talk to your Line Manager for more information.",
+"wfh": "Our company allows remote work.Talk to your Line Manager for more information.",
+"work from home": "Our company allows remote work.Talk to your Line Manager for more information.",
+"remote access": "Our company allows remote work.Talk to your Line Manager for more information",
+"workplace harassment": "Report any incidents of workplace harassment to HR immediately.You can do so via email or in person",
+"harassment": "Report any incidents of workplace harassment to HR immediately.You can do so via email or in person.",
+"posh": "Report any incidents of workplace harassment to HR immediately. You can do so via email or in person.",
+"benefits": "Our company offers health insurance, retirement plans, and various employee perks."
+}
 
 @app.route('/')
 def home():
     return render_template('index.html')
-
 
 @app.route('/get_response', methods=['POST'])
 def get_response():
@@ -27,47 +74,39 @@ def get_response():
     response = generate_response(user_message)
     return jsonify(response)
 
-
 def generate_response(user_message):
     # Preprocess the user message
-    sequences = tokenizer.texts_to_sequences([user_message])
-    padded_sequences = tf.keras.preprocessing.sequence.pad_sequences(sequences, maxlen=max_len, padding='post')
+    processed_message = preprocess_text(user_message)
 
-    # Get model prediction
-    prediction = model.predict(padded_sequences)
-    response_index = np.argmax(prediction)
+    # Handle greetings with regular expressions
+    greetings_pattern = re.compile(r'\b(hi|hey|hello)\b', re.IGNORECASE)
+    if greetings_pattern.search(processed_message):
+        return {'response': 'Hello! How may I help you?'}
 
-    # Load responses
-    responses = [
-        "You can typically claim reimbursements for expenses like business travel, healthcare costs, education expenses, and mobile and internet bills.",
-        "To claim reimbursements, collect all relevant receipts, fill out the reimbursement form according to the type of expenses you want to claim, and submit the form with relevant details.",
-        "To declare your investments, log into workday and click on Payroll. You will be redirected to Process Pay. On the Home Page, click on 'Submit Tax Declaration'. Fill out the necessary forms and submit the necessary documents. For more details contact HR department.",
-        "To claim medical insurance, follow these steps: 1. Obtain medical bills and reports. 2. Fill out the insurance claim form. 3. Attach necessary documents. 4. Submit the form to the insurance provider. 5. Await approval and reimbursement.",
-        "You have a variety of leave options including annual leave, sick leave, maternity leave, paternity leave, bereavement leave, personal leave, and study leave.",
-        "Applying for leave is simple. You need to fill out the leave application form available on workday under 'My Absences'. Once completed, submit the form. Your Line Manager has to approve your leaves. Make sure to provide the necessary details such as the type of leave, dates, and any supporting documentation required (if applicable).",
-        "To check your leave balance, you can log into workday and navigate to the 'My Balances' section. There, you will find your current leave balances displayed.",
-        "Our company provides sick leave to ensure employees can recover from illness without worrying about work. You are entitled to 15 days of sick leave per year. A medical certificate may be required for absences longer than 5 days. For more details, please refer to the company's sick leave policy document.",
-        "To apply for emergency leave, inform your Line Manager immediately about the situation. Ensure you provide necessary documentation if required. For more details, please refer to the employee handbook.",
-        "Our company offers maternity or paternity leave of up to 12 weeks. Employees are required to apply on workday and provide a medical certificate",
-        "The generic working hours are from 9 AM to 6 PM, Monday to Friday. This depends on the team you are in. For more details kindly discuss with your Line Manager.",
-        "We follow a 3 days work from office and 2 days work from home in a week. To know more about your allotted days, kindly discuss with your line manager",
-        "To fill out the Clarity time sheet, log in to the Clarity system, navigate to the 'Time Sheet' section, select the appropriate project and tasks, enter the hours worked for each day, and then save and submit your time sheet. If you need further assistance, refer to the user guide.",
-        "Our company allows flexible working hours to accommodate employees' needs. You can discuss and arrange your schedule with your Line manager, ensuring that core working hours are maintained and work goals are met.",
-        "You can find the leave policy document on the sharepoint home page.",
-        "You can find the contact person for more details in the company directory on our sharepoint or by contacting the HR department",
-        "Yes, our company provides a transport facility for employees. For more details on routes, timings, and how to avail this service, please refer to the transport policy on workday or contact the admin department.",
-        "Yes, our company provides meals for employees. We offer lunch in the cafeteria. You can find the meal schedule and menu on the sharepoint.",
-        "Yes, we have an Employee Engagement Committee like Sports, Music, Health and Safety committees dedicated to organizing activities and initiatives to keep employees motivated and connected. Find more in SharePoint."
-    ]
+    # Split the user message into words
+    user_words = set(processed_message.split())
 
-    # Check if the response index is valid
-    if response_index < len(responses):
-        response = responses[response_index]
-    else:
-        response = "Please contact helpdesk in-person for clarification."
+    # Check for static answers based on keywords
+    for keyword, response in static_answers.items():
+        if any(get_close_matches(word, [keyword], n=1, cutoff=0.8) for word in user_words):
+            return {'response': response}
 
-    return {'response': response}
+    # Initialize variables to find the best match
+    best_match_score = 0
+    best_response = "Please contact helpdesk in-person for clarification."
 
+    # Iterate through each question in the dataset
+    for index, row in data.iterrows():
+        question_words = set(preprocess_text(row['Question']).split())
+        common_words = user_words.intersection(question_words)
+        match_score = len(common_words)  # Score based on common words
+
+        # Check if this question has a higher match score
+        if match_score > best_match_score:
+            best_match_score = match_score
+            best_response = row['Response']
+
+    return {'response': best_response}
 
 if __name__ == "__main__":
     app.run(debug=True)
